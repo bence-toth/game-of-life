@@ -1,9 +1,8 @@
 const gridSize = 100;
 
-const getRandomRow = () =>
-  Array(gridSize)
-    .fill()
-    .map(() => (Math.random() < 0.25 ? 1 : 0));
+const getRandomCell = () => (Math.random() < 0.25 ? 1 : 0);
+
+const getRandomRow = () => Array(gridSize).fill().map(getRandomCell);
 
 let grid = Array(gridSize)
   .fill()
@@ -94,11 +93,23 @@ playButton.addEventListener("click", () => {
     gameIntervalId = setInterval(() => {
       nextRound();
       requestAnimationFrame(updateGrid);
-    }, 10);
+    }, 50);
     playButton.innerText = "Pause";
   } else {
     clearInterval(gameIntervalId);
     gameIntervalId = null;
     playButton.innerText = "Play";
+  }
+});
+
+const randomizeButton = document.getElementById("randomize");
+randomizeButton.addEventListener("click", () => {
+  grid.forEach((row, rowIndex) => {
+    row.forEach((_, columnIndex) => {
+      grid[rowIndex][columnIndex] = getRandomCell();
+    });
+  });
+  if (gameIntervalId === null) {
+    updateGrid();
   }
 });
