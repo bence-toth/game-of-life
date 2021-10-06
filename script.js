@@ -3,11 +3,13 @@ const gridSize = 100;
 const getRandomRow = () =>
   Array(gridSize)
     .fill()
-    .map(() => (Math.random() < 0.5 ? 1 : 0));
+    .map(() => (Math.random() < 0.25 ? 1 : 0));
 
 let grid = Array(gridSize)
   .fill()
   .map(() => getRandomRow());
+
+let gameIntervalId = null;
 
 document.getElementById("table").innerHTML = grid
   .map(
@@ -86,7 +88,17 @@ const nextRound = () => {
   grid = nextGrid;
 };
 
-setInterval(() => {
-  nextRound();
-  requestAnimationFrame(updateGrid);
-}, 10);
+const playButton = document.getElementById("play");
+playButton.addEventListener("click", () => {
+  if (gameIntervalId === null) {
+    gameIntervalId = setInterval(() => {
+      nextRound();
+      requestAnimationFrame(updateGrid);
+    }, 10);
+    playButton.innerText = "Pause";
+  } else {
+    clearInterval(gameIntervalId);
+    gameIntervalId = null;
+    playButton.innerText = "Play";
+  }
+});
