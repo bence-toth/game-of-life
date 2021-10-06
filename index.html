@@ -67,6 +67,21 @@
           .join("");
       };
       renderGrid();
+
+      const rows = document.querySelectorAll("#table .tr");
+      const cells = [...rows].map((row) => row.querySelectorAll(".td"));
+
+      const updateGrid = () => {
+        cells.forEach((row, rowIndex) => {
+          row.forEach((cell, columnIndex) => {
+            if (grid[rowIndex][columnIndex] === 0) {
+              cell.classList.remove("alive");
+            } else {
+              cell.classList.add("alive");
+            }
+          });
+        });
+      };
     </script>
   </body>
 </html>
