@@ -4,6 +4,8 @@ const getRandomCell = () => (Math.random() < 0.25 ? 1 : 0);
 
 const getRandomRow = () => Array(gridSize).fill().map(getRandomCell);
 
+const invertCell = (cell) => (cell === 1 ? 0 : 1);
+
 let grid = Array(gridSize)
   .fill()
   .map(() => getRandomRow());
@@ -12,9 +14,15 @@ let gameIntervalId = null;
 
 document.getElementById("table").innerHTML = grid
   .map(
-    (row) =>
+    (row, rowIndex) =>
       `<div class="tr">${row
-        .map((cell) => `<div class="td${cell === 1 ? " alive" : ""}"></div>`)
+        .map(
+          (cell, columnIndex) => `
+          <div class="td${cell === 1 ? " alive" : ""}">
+            <button data-row="${rowIndex}" data-column="${columnIndex}"></button>
+          </div>
+          `
+        )
         .join("")}</div>`
   )
   .join("");
@@ -112,4 +120,16 @@ randomizeButton.addEventListener("click", () => {
   if (gameIntervalId === null) {
     updateGrid();
   }
+});
+
+const cellButtons = document.querySelectorAll("#table button");
+cellButtons.forEach((cellButton) => {
+  cellButton.addEventListener("click", (event) => {
+    const rowIndex = Number(event.target.dataset.row);
+    const columnIndex = Number(event.target.dataset.column);
+    grid[rowIndex][columnIndex] = invertCell(grid[rowIndex][columnIndex]);
+    if (gameIntervalId === null) {
+      updateGrid();
+    }
+  });
 });
