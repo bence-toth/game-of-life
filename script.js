@@ -122,6 +122,23 @@ randomizeButton.addEventListener("click", () => {
   }
 });
 
+const clearButton = document.getElementById("clear");
+clearButton.addEventListener("click", () => {
+  grid.forEach((row, rowIndex) => {
+    row.forEach((_, columnIndex) => {
+      grid[rowIndex][columnIndex] = 0;
+    });
+  });
+  if (gameIntervalId === null) {
+    updateGrid();
+  } else {
+    clearInterval(gameIntervalId);
+    gameIntervalId = null;
+    playButton.innerText = "Play";
+    updateGrid();
+  }
+});
+
 const cellButtons = document.querySelectorAll("#table button");
 cellButtons.forEach((cellButton) => {
   cellButton.addEventListener("click", (event) => {
