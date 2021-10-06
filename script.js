@@ -62,33 +62,36 @@ const nextRound = () => {
       ).length;
 
       // Live cells
-      let nextCellValue;
       if (grid[rowIndex][columnIndex] === 1) {
         // Any live cell with fewer than two live neighbours dies, as if by underpopulation.
         if (numberOfAliveNeighbors < 2) {
-          nextCellValue = 0;
+          nextRow.push(0);
+          return;
         }
         // Any live cell with two or three live neighbours lives on to the next generation.
         else if ([2, 3].includes(numberOfAliveNeighbors)) {
-          nextCellValue = 1;
+          nextRow.push(1);
+          return;
         }
         // Any live cell with more than three live neighbours dies, as if by overpopulation.
         else if (numberOfAliveNeighbors > 3) {
-          nextCellValue = 0;
+          nextRow.push(0);
+          return;
         }
       }
       // Dead cells
       else {
         // Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
         if (numberOfAliveNeighbors === 3) {
-          nextCellValue = 1;
+          nextRow.push(1);
+          return;
         }
         // Any dead cell with more or less than three live neighbours will stay a dead cell.
         else {
-          nextCellValue = 0;
+          nextRow.push(0);
+          return;
         }
       }
-      nextRow.push(nextCellValue);
     });
     nextGrid.push(nextRow);
   });
