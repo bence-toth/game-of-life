@@ -7,6 +7,9 @@ html,
 body {
   height: 100%;
 }
+body {
+  background-color: hsl(0, 0%, 90%);
+}
 
 #table {
   max-width: 100%;
@@ -25,10 +28,10 @@ body {
 }
 #table .tr:nth-child(even) .td:nth-child(even),
 #table .tr:nth-child(odd) .td:nth-child(odd) {
-  background-color: hsl(0, 0%, 90%);
+  background-color: hsl(0, 0%, 85%);
 }
 #table .td.alive {
-  background-color: black;
+  background-color: hsl(0, 0%, 25%);
 }
 
 #controls {
