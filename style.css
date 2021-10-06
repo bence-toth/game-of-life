@@ -30,7 +30,7 @@ body {
 #table .tr:nth-child(odd) .td:nth-child(odd) {
   background-color: hsl(0, 0%, 85%);
 }
-#table .td.alive {
+#table .tr:nth-child(n) .td.alive:nth-child(n) {
   background-color: hsl(0, 0%, 25%);
 }
 
