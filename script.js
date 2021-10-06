@@ -1,4 +1,4 @@
-const gridSize = 75;
+const gridSize = 100;
 
 const getRandomRow = () =>
   Array(gridSize)
@@ -9,17 +9,14 @@ let grid = Array(gridSize)
   .fill()
   .map(() => getRandomRow());
 
-const renderGrid = () => {
-  document.getElementById("table").innerHTML = grid
-    .map(
-      (row) =>
-        `<div class="tr">${row
-          .map((cell) => `<div class="td${cell === 1 ? " alive" : ""}"></div>`)
-          .join("")}</div>`
-    )
-    .join("");
-};
-renderGrid();
+document.getElementById("table").innerHTML = grid
+  .map(
+    (row) =>
+      `<div class="tr">${row
+        .map((cell) => `<div class="td${cell === 1 ? " alive" : ""}"></div>`)
+        .join("")}</div>`
+  )
+  .join("");
 
 const rows = document.querySelectorAll("#table .tr");
 const cells = [...rows].map((row) => row.querySelectorAll(".td"));
