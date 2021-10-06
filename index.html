@@ -135,6 +135,11 @@
         });
         grid = nextGrid;
       };
+
+      setInterval(() => {
+        nextRound();
+        requestAnimationFrame(updateGrid);
+      }, 10);
     </script>
   </body>
 </html>
