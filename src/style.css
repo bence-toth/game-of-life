@@ -46,12 +46,12 @@ body {
   height: 100%;
   border: 0;
   background-color: transparent;
-  cursor: crosshair;
+  /* cursor: crosshair; */
   border-radius: 2px;
 }
-#world .field button:hover {
+/* #world .field button:hover {
   background-color: hsla(0, 100%, 50%, 50%);
-}
+} */
 
 #controls {
   position: absolute;

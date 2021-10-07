@@ -10,7 +10,7 @@ const worldSize = 100;
 // Nodes
 const playButtonNode = document.getElementById("play");
 const randomizeButtonNode = document.getElementById("randomize");
-const clearButtonNode = document.getElementById("clear");
+// const clearButtonNode = document.getElementById("clear");
 const worldNode = document.getElementById("world");
 
 // Renderers
@@ -111,11 +111,11 @@ const initWorld = () => {
   const rows = worldNode.querySelectorAll(".row");
   return {
     fieldNodes: [...rows].map((row) => row.querySelectorAll(".field")),
-    fieldButtonNodes: worldNode.querySelectorAll("button"),
+    // fieldButtonNodes: worldNode.querySelectorAll("button"),
   };
 };
 
-const { fieldNodes, fieldButtonNodes } = initWorld();
+const { fieldNodes /*, fieldButtonNodes */ } = initWorld();
 
 const rehydrateFieldNodes = () => {
   fieldNodes.forEach((row, rowIndex) => {
@@ -167,29 +167,29 @@ randomizeButtonNode.addEventListener("click", () => {
   }
 });
 
-clearButtonNode.addEventListener("click", () => {
-  world.forEach((row, rowIndex) => {
-    row.forEach((_, columnIndex) => {
-      world[rowIndex][columnIndex] = Field.Void;
-    });
-  });
-  if (gameIntervalId === null) {
-    rehydrateFieldNodes();
-  } else {
-    pause();
-    playButtonNode.innerText = "Play";
-    rehydrateFieldNodes();
-  }
-});
+// clearButtonNode.addEventListener("click", () => {
+//   world.forEach((row, rowIndex) => {
+//     row.forEach((_, columnIndex) => {
+//       world[rowIndex][columnIndex] = Field.Void;
+//     });
+//   });
+//   if (gameIntervalId === null) {
+//     rehydrateFieldNodes();
+//   } else {
+//     pause();
+//     playButtonNode.innerText = "Play";
+//     rehydrateFieldNodes();
+//   }
+// });
 
-fieldButtonNodes.forEach((fieldButtonNode) => {
-  fieldButtonNode.addEventListener("click", (event) => {
-    const button = event.target as HTMLButtonElement;
-    const rowIndex = Number(button.dataset.row);
-    const columnIndex = Number(button.dataset.column);
-    world[rowIndex][columnIndex] = invertField(world[rowIndex][columnIndex]);
-    if (gameIntervalId === null) {
-      rehydrateFieldNodes();
-    }
-  });
-});
+// fieldButtonNodes.forEach((fieldButtonNode) => {
+//   fieldButtonNode.addEventListener("click", (event) => {
+//     const button = event.target as HTMLButtonElement;
+//     const rowIndex = Number(button.dataset.row);
+//     const columnIndex = Number(button.dataset.column);
+//     world[rowIndex][columnIndex] = invertField(world[rowIndex][columnIndex]);
+//     if (gameIntervalId === null) {
+//       rehydrateFieldNodes();
+//     }
+//   });
+// });
