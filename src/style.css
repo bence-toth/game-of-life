@@ -41,11 +41,11 @@ body {
   border-radius: 2px;
 }
 #world .row:nth-child(n) .field.well:nth-child(n) {
-  background-color: hsl(0, 100%, 40%);
+  background-color: hsl(218, 100%, 60%);
   border-radius: 2px;
 }
 #world .row:nth-child(n) .field.wall:nth-child(n) {
-  background-color: hsl(218, 100%, 60%);
+  background-color: hsl(0, 100%, 40%);
   border-radius: 2px;
 }
 #world .field button {
