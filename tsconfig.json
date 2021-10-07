@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    // "module": "commonjs",
     "noImplicitAny": true,
     "removeComments": true,
     "preserveConstEnums": true,
@@ -8,5 +7,5 @@
     "lib": ["dom", "es2021"],
     "target": "es2015"
   },
-  "files": ["script.ts"]
+  "files": ["src/script.ts"]
 }
