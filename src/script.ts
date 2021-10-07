@@ -2,15 +2,15 @@ const gridSize = 100;
 
 const getRandomCell = () => (Math.random() < 0.25 ? 1 : 0);
 
-const getRandomRow = () => Array(gridSize).fill().map(getRandomCell);
+const getRandomRow = () => Array(gridSize).fill(undefined).map(getRandomCell);
 
-const invertCell = (cell) => (cell === 1 ? 0 : 1);
+const invertCell = (cell: number) => (cell === 1 ? 0 : 1);
 
 let grid = Array(gridSize)
-  .fill()
+  .fill(undefined)
   .map(() => getRandomRow());
 
-let gameIntervalId = null;
+let gameIntervalId: number | null = null;
 
 document.getElementById("table").innerHTML = grid
   .map(
@@ -43,9 +43,9 @@ const updateGrid = () => {
 };
 
 const nextRound = () => {
-  const nextGrid = [];
+  const nextGrid: (1 | 0)[][] = [];
   grid.forEach((row, rowIndex) => {
-    const nextRow = [];
+    const nextRow: (1 | 0)[] = [];
     row.forEach((_, columnIndex) => {
       const neighbors = [
         (grid[rowIndex - 1] ?? [])[columnIndex - 1],
@@ -101,7 +101,7 @@ const nextRound = () => {
 const playButton = document.getElementById("play");
 playButton.addEventListener("click", () => {
   if (gameIntervalId === null) {
-    gameIntervalId = setInterval(() => {
+    gameIntervalId = window.setInterval(() => {
       nextRound();
       requestAnimationFrame(updateGrid);
     }, 50);
@@ -145,8 +145,9 @@ clearButton.addEventListener("click", () => {
 const cellButtons = document.querySelectorAll("#table button");
 cellButtons.forEach((cellButton) => {
   cellButton.addEventListener("click", (event) => {
-    const rowIndex = Number(event.target.dataset.row);
-    const columnIndex = Number(event.target.dataset.column);
+    const button = event.target as HTMLButtonElement;
+    const rowIndex = Number(button.dataset.row);
+    const columnIndex = Number(button.dataset.column);
     grid[rowIndex][columnIndex] = invertCell(grid[rowIndex][columnIndex]);
     if (gameIntervalId === null) {
       updateGrid();
