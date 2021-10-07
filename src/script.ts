@@ -47,10 +47,10 @@ const renderWorld = (world: Field[][]) => world.map(renderRow).join("");
 // Utility
 const getRandomField = () => {
   const randomNumber = Math.random();
-  if (randomNumber < 0.025) {
+  if (randomNumber < 0.01) {
     return Field.Wall;
   }
-  if (randomNumber < 0.05) {
+  if (randomNumber < 0.02) {
     return Field.Well;
   }
   if (randomNumber < 0.25) {
@@ -84,27 +84,27 @@ const getNeighbors = (
 
 const getNextFieldState = (
   currentFieldState: Field,
-  numberOfCellNeighbors: number
+  numberOfCellAndWellNeighbors: number
 ) => {
   // Cells
   if (currentFieldState === Field.Cell) {
     // Any cell with fewer than two cell neighbors will become void, dying by isolation.
-    if (numberOfCellNeighbors < 2) {
+    if (numberOfCellAndWellNeighbors < 2) {
       return Field.Void;
     }
     // Any cell with two or three cell neighbors will stay a cell.
-    else if ([2, 3].includes(numberOfCellNeighbors)) {
+    else if ([2, 3].includes(numberOfCellAndWellNeighbors)) {
       return Field.Cell;
     }
     // Any cell with more than three cell neighbors will become void, dying by overpopulation.
-    else if (numberOfCellNeighbors > 3) {
+    else if (numberOfCellAndWellNeighbors > 3) {
       return Field.Void;
     }
   }
   // Void
   if (currentFieldState === Field.Void) {
     // Any void with exactly three cell neighbors becomes a cell, born by reproduction.
-    if (numberOfCellNeighbors === 3) {
+    if (numberOfCellAndWellNeighbors === 3) {
       return Field.Cell;
     }
     // Any void with more or less than three cell neighbors will stay void.
@@ -126,10 +126,10 @@ const getNextWorld = (currentWorld: Field[][]) => {
     const nextRow: Field[] = [];
     row.forEach((field, columnIndex) => {
       const neighbors = getNeighbors(currentWorld, rowIndex, columnIndex);
-      const numberOfCellNeighbors = neighbors.filter(
-        (neighbor) => neighbor === Field.Cell
+      const numberOfCellAndWellNeighbors = neighbors.filter(
+        (neighbor) => neighbor === Field.Cell || neighbor === Field.Well
       ).length;
-      nextRow.push(getNextFieldState(field, numberOfCellNeighbors));
+      nextRow.push(getNextFieldState(field, numberOfCellAndWellNeighbors));
     });
     nextWorld.push(nextRow);
   });
@@ -154,9 +154,19 @@ const rehydrateFieldNodes = () => {
   fieldNodes.forEach((row, rowIndex) => {
     row.forEach((fieldNode, columnIndex) => {
       if (world[rowIndex][columnIndex] === Field.Void) {
-        fieldNode.classList.remove("cell");
-      } else {
+        fieldNode.classList.remove("cell", "well", "wall");
+      }
+      if (world[rowIndex][columnIndex] === Field.Cell) {
+        fieldNode.classList.remove("well", "wall");
         fieldNode.classList.add("cell");
+      }
+      if (world[rowIndex][columnIndex] === Field.Well) {
+        fieldNode.classList.remove("cell", "wall");
+        fieldNode.classList.add("well");
+      }
+      if (world[rowIndex][columnIndex] === Field.Wall) {
+        fieldNode.classList.remove("cell", "well");
+        fieldNode.classList.add("wall");
       }
     });
   });
