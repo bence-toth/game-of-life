@@ -1,164 +1,195 @@
+// Types
 enum Field {
   Void,
   Cell,
 }
 
-const gridSize = 100;
+// Options
+const worldSize = 100;
 
-const getRandomCell = () => (Math.random() < 0.25 ? Field.Cell : Field.Void);
+// Nodes
+const playButtonNode = document.getElementById("play");
+const randomizeButtonNode = document.getElementById("randomize");
+const clearButtonNode = document.getElementById("clear");
+const worldNode = document.getElementById("world");
 
-const getRandomRow = () => Array(gridSize).fill(undefined).map(getRandomCell);
+// Renderers
+const renderField = (rowIndex: number) => (field: Field, columnIndex: number) =>
+  `
+    <div class="field${field === Field.Cell ? " cell" : ""}">
+      <button data-row="${rowIndex}" data-column="${columnIndex}"></button>
+    </div>
+  `;
 
-const invertCell = (cell: number) =>
-  cell === Field.Cell ? Field.Void : Field.Cell;
+const renderRow = (row: Field[], rowIndex: number) => `
+  <div class="row">
+    ${row.map(renderField(rowIndex)).join("")}
+  </div>
+`;
 
-let grid = Array(gridSize)
-  .fill(undefined)
-  .map(() => getRandomRow());
+const renderWorld = (world: Field[][]) => world.map(renderRow).join("");
+
+// Utility
+const getRandomField = () => (Math.random() < 0.25 ? Field.Cell : Field.Void);
+
+const getRandomRow = () => Array(worldSize).fill(undefined).map(getRandomField);
+
+const getRandomWorld = (worldSize: number) =>
+  Array(worldSize).fill(undefined).map(getRandomRow);
+
+const invertField = (field: number) =>
+  field === Field.Cell ? Field.Void : Field.Cell;
+
+const getNeighbors = (
+  world: Field[][],
+  rowIndex: number,
+  columnIndex: number
+) => [
+  (world[rowIndex - 1] ?? [])[columnIndex - 1],
+  (world[rowIndex - 1] ?? [])[columnIndex],
+  (world[rowIndex - 1] ?? [])[columnIndex + 1],
+  (world[rowIndex] ?? [])[columnIndex - 1],
+  (world[rowIndex] ?? [])[columnIndex + 1],
+  (world[rowIndex + 1] ?? [])[columnIndex - 1],
+  (world[rowIndex + 1] ?? [])[columnIndex],
+  (world[rowIndex + 1] ?? [])[columnIndex + 1],
+];
+
+const getNextFieldState = (
+  currentFieldState: Field,
+  numberOfCellNeighbors: number
+) => {
+  // Cells
+  if (currentFieldState === Field.Cell) {
+    // Any cell with fewer than two cell neighbors will become void, dying by isolation.
+    if (numberOfCellNeighbors < 2) {
+      return Field.Void;
+    }
+    // Any cell with two or three cell neighbors will stay a cell.
+    else if ([2, 3].includes(numberOfCellNeighbors)) {
+      return Field.Cell;
+    }
+    // Any cell with more than three cell neighbors will become void, dying by overpopulation.
+    else if (numberOfCellNeighbors > 3) {
+      return Field.Void;
+    }
+  }
+  // Void
+  else {
+    // Any void with exactly three cell neighbors becomes a cell, born by reproduction.
+    if (numberOfCellNeighbors === 3) {
+      return Field.Cell;
+    }
+    // Any void with more or less than three cell neighbors will stay void.
+    else {
+      return Field.Void;
+    }
+  }
+};
+
+const getNextWorld = (currentWorld: Field[][]) => {
+  const nextWorld: Field[][] = [];
+  currentWorld.forEach((row, rowIndex) => {
+    const nextRow: Field[] = [];
+    row.forEach((field, columnIndex) => {
+      const neighbors = getNeighbors(currentWorld, rowIndex, columnIndex);
+      const numberOfCellNeighbors = neighbors.filter(
+        (neighbor) => neighbor === Field.Cell
+      ).length;
+      nextRow.push(getNextFieldState(field, numberOfCellNeighbors));
+    });
+    nextWorld.push(nextRow);
+  });
+  return nextWorld;
+};
+
+// Game engine
+let world = getRandomWorld(worldSize);
+
+const initWorld = () => {
+  worldNode.innerHTML = renderWorld(world);
+  const rows = worldNode.querySelectorAll(".row");
+  return {
+    fieldNodes: [...rows].map((row) => row.querySelectorAll(".field")),
+    fieldButtonNodes: worldNode.querySelectorAll("button"),
+  };
+};
+
+const { fieldNodes, fieldButtonNodes } = initWorld();
+
+const rehydrateFieldNodes = () => {
+  fieldNodes.forEach((row, rowIndex) => {
+    row.forEach((fieldNode, columnIndex) => {
+      if (world[rowIndex][columnIndex] === Field.Void) {
+        fieldNode.classList.remove("cell");
+      } else {
+        fieldNode.classList.add("cell");
+      }
+    });
+  });
+};
+
+const nextGeneration = () => {
+  world = getNextWorld(world);
+};
 
 let gameIntervalId: number | null = null;
 
-document.getElementById("table").innerHTML = grid
-  .map(
-    (row, rowIndex) => `
-      <div class="tr">${row
-        .map(
-          (cell, columnIndex) => `
-            <div class="td${cell === Field.Cell ? " alive" : ""}">
-              <button data-row="${rowIndex}" data-column="${columnIndex}"></button>
-            </div>
-          `
-        )
-        .join("")}
-      </div>
-    `
-  )
-  .join("");
-
-const rows = document.querySelectorAll("#table .tr");
-const cells = [...rows].map((row) => row.querySelectorAll(".td"));
-
-const updateGrid = () => {
-  cells.forEach((row, rowIndex) => {
-    row.forEach((cell, columnIndex) => {
-      if (grid[rowIndex][columnIndex] === Field.Void) {
-        cell.classList.remove("alive");
-      } else {
-        cell.classList.add("alive");
-      }
-    });
-  });
+const play = () => {
+  nextGeneration();
+  requestAnimationFrame(rehydrateFieldNodes);
 };
 
-const nextRound = () => {
-  const nextGrid: Field[][] = [];
-  grid.forEach((row, rowIndex) => {
-    const nextRow: Field[] = [];
-    row.forEach((_, columnIndex) => {
-      const neighbors = [
-        (grid[rowIndex - 1] ?? [])[columnIndex - 1],
-        (grid[rowIndex - 1] ?? [])[columnIndex],
-        (grid[rowIndex - 1] ?? [])[columnIndex + 1],
-        (grid[rowIndex] ?? [])[columnIndex - 1],
-        (grid[rowIndex] ?? [])[columnIndex + 1],
-        (grid[rowIndex + 1] ?? [])[columnIndex - 1],
-        (grid[rowIndex + 1] ?? [])[columnIndex],
-        (grid[rowIndex + 1] ?? [])[columnIndex + 1],
-      ];
-      const numberOfAliveNeighbors = neighbors.filter(
-        (neighbor) => neighbor === Field.Cell
-      ).length;
-
-      // Live cells
-      if (grid[rowIndex][columnIndex] === Field.Cell) {
-        // Any live cell with fewer than two live neighbours dies, as if by underpopulation.
-        if (numberOfAliveNeighbors < 2) {
-          nextRow.push(Field.Void);
-          return;
-        }
-        // Any live cell with two or three live neighbours lives on to the next generation.
-        else if ([2, 3].includes(numberOfAliveNeighbors)) {
-          nextRow.push(Field.Cell);
-          return;
-        }
-        // Any live cell with more than three live neighbours dies, as if by overpopulation.
-        else if (numberOfAliveNeighbors > 3) {
-          nextRow.push(Field.Void);
-          return;
-        }
-      }
-      // Dead cells
-      else {
-        // Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
-        if (numberOfAliveNeighbors === 3) {
-          nextRow.push(Field.Cell);
-          return;
-        }
-        // Any dead cell with more or less than three live neighbours will stay a dead cell.
-        else {
-          nextRow.push(Field.Void);
-          return;
-        }
-      }
-    });
-    nextGrid.push(nextRow);
-  });
-  grid = nextGrid;
+const pause = () => {
+  clearInterval(gameIntervalId);
+  gameIntervalId = null;
 };
 
-const playButton = document.getElementById("play");
-playButton.addEventListener("click", () => {
+// Controls
+playButtonNode.addEventListener("click", () => {
   if (gameIntervalId === null) {
-    gameIntervalId = window.setInterval(() => {
-      nextRound();
-      requestAnimationFrame(updateGrid);
-    }, 50);
-    playButton.innerText = "Pause";
+    gameIntervalId = window.setInterval(play, 50);
+    playButtonNode.innerText = "Pause";
   } else {
-    clearInterval(gameIntervalId);
-    gameIntervalId = null;
-    playButton.innerText = "Play";
+    pause();
+    playButtonNode.innerText = "Play";
   }
 });
 
-const randomizeButton = document.getElementById("randomize");
-randomizeButton.addEventListener("click", () => {
-  grid.forEach((row, rowIndex) => {
+randomizeButtonNode.addEventListener("click", () => {
+  world.forEach((row, rowIndex) => {
     row.forEach((_, columnIndex) => {
-      grid[rowIndex][columnIndex] = getRandomCell();
+      world[rowIndex][columnIndex] = getRandomField();
     });
   });
   if (gameIntervalId === null) {
-    updateGrid();
+    rehydrateFieldNodes();
   }
 });
 
-const clearButton = document.getElementById("clear");
-clearButton.addEventListener("click", () => {
-  grid.forEach((row, rowIndex) => {
+clearButtonNode.addEventListener("click", () => {
+  world.forEach((row, rowIndex) => {
     row.forEach((_, columnIndex) => {
-      grid[rowIndex][columnIndex] = Field.Void;
+      world[rowIndex][columnIndex] = Field.Void;
     });
   });
   if (gameIntervalId === null) {
-    updateGrid();
+    rehydrateFieldNodes();
   } else {
-    clearInterval(gameIntervalId);
-    gameIntervalId = null;
-    playButton.innerText = "Play";
-    updateGrid();
+    pause();
+    playButtonNode.innerText = "Play";
+    rehydrateFieldNodes();
   }
 });
 
-const cellButtons = document.querySelectorAll("#table button");
-cellButtons.forEach((cellButton) => {
-  cellButton.addEventListener("click", (event) => {
+fieldButtonNodes.forEach((fieldButtonNode) => {
+  fieldButtonNode.addEventListener("click", (event) => {
     const button = event.target as HTMLButtonElement;
     const rowIndex = Number(button.dataset.row);
     const columnIndex = Number(button.dataset.column);
-    grid[rowIndex][columnIndex] = invertCell(grid[rowIndex][columnIndex]);
+    world[rowIndex][columnIndex] = invertField(world[rowIndex][columnIndex]);
     if (gameIntervalId === null) {
-      updateGrid();
+      rehydrateFieldNodes();
     }
   });
 });

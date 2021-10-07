@@ -12,7 +12,7 @@ body {
   overflow: hidden;
 }
 
-#table {
+#world {
   max-width: calc(100% - 10px);
   max-height: calc(100% - 10px);
   aspect-ratio: 1 / 1;
@@ -24,23 +24,23 @@ body {
   margin-top: 5px;
   border: 1px solid hsl(0, 0%, 70%);
 }
-#table .tr {
+#world .row {
   display: flex;
   flex-grow: 1;
   gap: 1px;
 }
-#table .td {
+#world .field {
   flex-grow: 1;
 }
-#table .tr:nth-child(even) .td:nth-child(even),
-#table .tr:nth-child(odd) .td:nth-child(odd) {
+#world .row:nth-child(even) .field:nth-child(even),
+#world .row:nth-child(odd) .field:nth-child(odd) {
   background-color: hsl(0, 0%, 85%);
 }
-#table .tr:nth-child(n) .td.alive:nth-child(n) {
+#world .row:nth-child(n) .field.cell:nth-child(n) {
   background-color: hsl(0, 0%, 25%);
   border-radius: 2px;
 }
-#table .td button {
+#world .field button {
   display: block;
   width: 100%;
   height: 100%;
@@ -49,7 +49,7 @@ body {
   cursor: crosshair;
   border-radius: 2px;
 }
-#table .td button:hover {
+#world .field button:hover {
   background-color: hsla(0, 100%, 50%, 50%);
 }
 
