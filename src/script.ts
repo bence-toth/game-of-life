@@ -59,10 +59,21 @@ const getRandomField = () => {
   return Field.Void;
 };
 
-const getRandomRow = () => Array(worldSize).fill(undefined).map(getRandomField);
+const getRandomRow = () => [
+  Field.Wall,
+  ...Array(worldSize - 2)
+    .fill(undefined)
+    .map(getRandomField),
+  Field.Wall,
+];
 
-const getRandomWorld = (worldSize: number) =>
-  Array(worldSize).fill(undefined).map(getRandomRow);
+const getRandomWorld = (worldSize: number) => [
+  [...Array(worldSize).fill(Field.Wall)],
+  ...Array(worldSize - 2)
+    .fill(undefined)
+    .map(getRandomRow),
+  [...Array(worldSize).fill(Field.Wall)],
+];
 
 // const invertField = (field: number) =>
 //   field === Field.Cell ? Field.Void : Field.Cell;
@@ -200,11 +211,7 @@ playButtonNode.addEventListener("click", () => {
 });
 
 randomizeButtonNode.addEventListener("click", () => {
-  world.forEach((row, rowIndex) => {
-    row.forEach((_, columnIndex) => {
-      world[rowIndex][columnIndex] = getRandomField();
-    });
-  });
+  world = getRandomWorld(worldSize);
   if (gameIntervalId === null) {
     rehydrateFieldNodes();
   }
