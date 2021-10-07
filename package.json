@@ -1,0 +1,21 @@
+{
+  "name": "game-of-life",
+  "version": "1.0.0",
+  "description": "Game of Life",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bence-toth/game-of-life.git"
+  },
+  "author": "Bence A. Tóth",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bence-toth/game-of-life/issues"
+  },
+  "homepage": "https://github.com/bence-toth/game-of-life#readme",
+  "devDependencies": {
+    "typescript": "^4.4.3"
+  }
+}
