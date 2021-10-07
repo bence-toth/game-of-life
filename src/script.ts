@@ -20,16 +20,18 @@ let gameIntervalId: number | null = null;
 
 document.getElementById("table").innerHTML = grid
   .map(
-    (row, rowIndex) =>
-      `<div class="tr">${row
+    (row, rowIndex) => `
+      <div class="tr">${row
         .map(
           (cell, columnIndex) => `
-          <div class="td${cell === Field.Cell ? " alive" : ""}">
-            <button data-row="${rowIndex}" data-column="${columnIndex}"></button>
-          </div>
+            <div class="td${cell === Field.Cell ? " alive" : ""}">
+              <button data-row="${rowIndex}" data-column="${columnIndex}"></button>
+            </div>
           `
         )
-        .join("")}</div>`
+        .join("")}
+      </div>
+    `
   )
   .join("");
 
