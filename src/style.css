@@ -37,7 +37,15 @@ body {
   background-color: hsl(0, 0%, 85%);
 }
 #world .row:nth-child(n) .field.cell:nth-child(n) {
+  background-color: hsl(132, 100%, 25%);
+  border-radius: 2px;
+}
+#world .row:nth-child(n) .field.well:nth-child(n) {
   background-color: hsl(0, 0%, 25%);
+  border-radius: 2px;
+}
+#world .row:nth-child(n) .field.wall:nth-child(n) {
+  background-color: hsl(218, 100%, 25%);
   border-radius: 2px;
 }
 #world .field button {

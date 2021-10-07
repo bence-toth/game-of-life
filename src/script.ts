@@ -2,6 +2,8 @@
 enum Field {
   Void,
   Cell,
+  Well,
+  Wall,
 }
 
 // Options
@@ -14,9 +16,22 @@ const randomizeButtonNode = document.getElementById("randomize");
 const worldNode = document.getElementById("world");
 
 // Renderers
+const getFieldClassAttribute = (field: Field) => {
+  if (field === Field.Cell) {
+    return "cell field";
+  }
+  if (field === Field.Well) {
+    return "well field";
+  }
+  if (field === Field.Wall) {
+    return "wall field";
+  }
+  return "field";
+};
+
 const renderField = (rowIndex: number) => (field: Field, columnIndex: number) =>
   `
-    <div class="field${field === Field.Cell ? " cell" : ""}">
+    <div class="${getFieldClassAttribute(field)}">
       <button data-row="${rowIndex}" data-column="${columnIndex}"></button>
     </div>
   `;
@@ -30,15 +45,27 @@ const renderRow = (row: Field[], rowIndex: number) => `
 const renderWorld = (world: Field[][]) => world.map(renderRow).join("");
 
 // Utility
-const getRandomField = () => (Math.random() < 0.25 ? Field.Cell : Field.Void);
+const getRandomField = () => {
+  const randomNumber = Math.random();
+  if (randomNumber < 0.025) {
+    return Field.Wall;
+  }
+  if (randomNumber < 0.05) {
+    return Field.Well;
+  }
+  if (randomNumber < 0.25) {
+    return Field.Cell;
+  }
+  return Field.Void;
+};
 
 const getRandomRow = () => Array(worldSize).fill(undefined).map(getRandomField);
 
 const getRandomWorld = (worldSize: number) =>
   Array(worldSize).fill(undefined).map(getRandomRow);
 
-const invertField = (field: number) =>
-  field === Field.Cell ? Field.Void : Field.Cell;
+// const invertField = (field: number) =>
+//   field === Field.Cell ? Field.Void : Field.Cell;
 
 const getNeighbors = (
   world: Field[][],
@@ -75,7 +102,7 @@ const getNextFieldState = (
     }
   }
   // Void
-  else {
+  if (currentFieldState === Field.Void) {
     // Any void with exactly three cell neighbors becomes a cell, born by reproduction.
     if (numberOfCellNeighbors === 3) {
       return Field.Cell;
@@ -84,6 +111,12 @@ const getNextFieldState = (
     else {
       return Field.Void;
     }
+  }
+  if (currentFieldState === Field.Well) {
+    return Field.Well;
+  }
+  if (currentFieldState === Field.Wall) {
+    return Field.Wall;
   }
 };
 
