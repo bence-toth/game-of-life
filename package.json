@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Game of Life",
   "scripts": {
+    "dev": "watch 'npm run build' ./src --filter='./.watch-filter.js'",
     "build": "tsc; parcel build --public-url '.' ./src/index.html"
   },
   "repository": {
