@@ -7,7 +7,7 @@ enum Field {
 }
 
 // Options
-const worldSize = 100;
+const worldSize = 75;
 
 // Nodes
 const playButtonNode = document.getElementById("play");
@@ -123,12 +123,6 @@ const getNextFieldState = (
       return Field.Void;
     }
   }
-  if (currentFieldState === Field.Well) {
-    return Field.Well;
-  }
-  if (currentFieldState === Field.Wall) {
-    return Field.Wall;
-  }
 };
 
 const getNextWorld = (currentWorld: Field[][]) => {
@@ -140,7 +134,11 @@ const getNextWorld = (currentWorld: Field[][]) => {
       const numberOfCellAndWellNeighbors = neighbors.filter(
         (neighbor) => neighbor === Field.Cell || neighbor === Field.Well
       ).length;
-      nextRow.push(getNextFieldState(field, numberOfCellAndWellNeighbors));
+      if (field === Field.Wall || field === Field.Well) {
+        nextRow.push(field);
+      } else {
+        nextRow.push(getNextFieldState(field, numberOfCellAndWellNeighbors));
+      }
     });
     nextWorld.push(nextRow);
   });
