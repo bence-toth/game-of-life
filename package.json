@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Game of Life",
   "scripts": {
-    "build": "tsc --outDir ./public"
+    "build": "tsc; parcel build --public-url '.' ./src/index.html"
   },
   "repository": {
     "type": "git",
