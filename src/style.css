@@ -15,11 +15,7 @@ body {
 
 main {
   display: flex;
-}
-
-#controls {
-  flex-grow: 1;
-  padding: 20px;
+  gap: 5px;
 }
 
 #world {
@@ -27,8 +23,7 @@ main {
   flex-grow: 0;
   aspect-ratio: 1 / 1;
   padding: 5px;
-  margin: 0;
-  /* aspect-ratio: 1 / 1; */
+  padding-inline-end: 0;
   margin: auto;
   display: flex;
   flex-direction: column;
@@ -70,3 +65,42 @@ main {
 /* #world .field button:hover {
   background-color: hsla(0, 100%, 50%, 50%);
 } */
+
+#controls {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  padding: 5px;
+  padding-inline-start: 0;
+  gap: 5px;
+}
+
+#controls .toolbar {
+  display: flex;
+  gap: 5px;
+}
+
+#controls .toolbar button {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  cursor: pointer;
+}
+
+#controls .toolbar button .icon img {
+  width: 100%;
+  max-width: 32px;
+  display: block;
+  margin-bottom: 5px;
+}
+
+#controls .toolbar button#play[data-playing="true"] .play {
+  display: none;
+}
+
+#controls .toolbar button#play[data-playing="false"] .pause {
+  display: none;
+}

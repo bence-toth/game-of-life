@@ -11,9 +11,48 @@
     <main>
       <div id="world"></div>
       <div id="controls">
-        <button id="play">Play</button>
-        <button id="randomize">Randomize</button>
-        <!-- <button id="clear">Clear</button> -->
+        <div class="toolbar">
+          <button id="play" data-playing="false">
+            <span class="icon play">
+              <img src="./icons/play.svg" />
+            </span>
+            <span class="icon pause">
+              <img src="./icons/pause.svg" />
+            </span>
+            <span class="caption play">Play</span>
+            <span class="caption pause">Pause</span>
+          </button>
+          <button id="randomize">
+            <span class="icon">
+              <img src="./icons/dice.svg" />
+            </span>
+            <span class="caption">Randomize</span>
+          </button>
+          <button id="clear">
+            <span class="icon">
+              <img src="./icons/clear.svg" />
+            </span>
+            <span class="caption">Clear</span>
+          </button>
+        </div>
+        <div class="toolbar">
+          <button id="export">
+            <span class="icon">
+              <img src="./icons/export.svg" />
+            </span>
+            <span class="caption">Export</span>
+          </button>
+          <button id="import">
+            <span class="icon">
+              <img src="./icons/import.svg" />
+            </span>
+            <span class="caption">Import</span>
+          </button>
+          <button id="settings">
+            <span class="icon"> <img src="./icons/settings.svg" /> </span>
+            <span class="caption">Settings</span>
+          </button>
+        </div>
       </div>
     </main>
     <script src="./script.js"></script>

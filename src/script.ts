@@ -201,10 +201,10 @@ const pause = () => {
 playButtonNode.addEventListener("click", () => {
   if (gameIntervalId === null) {
     gameIntervalId = window.setInterval(play, 50);
-    playButtonNode.innerText = "Pause";
+    playButtonNode.dataset.playing = "true";
   } else {
     pause();
-    playButtonNode.innerText = "Play";
+    playButtonNode.dataset.playing = "false";
   }
 });
 
