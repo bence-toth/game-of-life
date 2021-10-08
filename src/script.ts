@@ -12,7 +12,7 @@ const worldSize = 75;
 // Nodes
 const playButtonNode = document.getElementById("play");
 const randomizeButtonNode = document.getElementById("randomize");
-// const clearButtonNode = document.getElementById("clear");
+const clearButtonNode = document.getElementById("clear");
 const worldNode = document.getElementById("world");
 
 // Renderers
@@ -187,24 +187,28 @@ const nextGeneration = () => {
 
 let gameIntervalId: number | null = null;
 
-const play = () => {
+const clockTick = () => {
   nextGeneration();
   requestAnimationFrame(rehydrateFieldNodes);
+};
+
+const play = () => {
+  gameIntervalId = window.setInterval(clockTick, 50);
+  playButtonNode.dataset.playing = "true";
 };
 
 const pause = () => {
   clearInterval(gameIntervalId);
   gameIntervalId = null;
+  playButtonNode.dataset.playing = "false";
 };
 
 // Controls
 playButtonNode.addEventListener("click", () => {
   if (gameIntervalId === null) {
-    gameIntervalId = window.setInterval(play, 50);
-    playButtonNode.dataset.playing = "true";
+    play();
   } else {
     pause();
-    playButtonNode.dataset.playing = "false";
   }
 });
 
@@ -215,20 +219,27 @@ randomizeButtonNode.addEventListener("click", () => {
   }
 });
 
-// clearButtonNode.addEventListener("click", () => {
-//   world.forEach((row, rowIndex) => {
-//     row.forEach((_, columnIndex) => {
-//       world[rowIndex][columnIndex] = Field.Void;
-//     });
-//   });
-//   if (gameIntervalId === null) {
-//     rehydrateFieldNodes();
-//   } else {
-//     pause();
-//     playButtonNode.innerText = "Play";
-//     rehydrateFieldNodes();
-//   }
-// });
+clearButtonNode.addEventListener("click", () => {
+  world.forEach((row, rowIndex) => {
+    row.forEach((_, columnIndex) => {
+      if (
+        rowIndex === 0 ||
+        columnIndex === 0 ||
+        rowIndex === worldSize - 1 ||
+        columnIndex === worldSize - 1
+      ) {
+        return;
+      }
+      world[rowIndex][columnIndex] = Field.Void;
+    });
+  });
+  if (gameIntervalId === null) {
+    rehydrateFieldNodes();
+  } else {
+    pause();
+    rehydrateFieldNodes();
+  }
+});
 
 // fieldButtonNodes.forEach((fieldButtonNode) => {
 //   fieldButtonNode.addEventListener("click", (event) => {
