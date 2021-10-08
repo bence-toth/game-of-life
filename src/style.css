@@ -4,7 +4,8 @@
   padding: 0;
 }
 html,
-body {
+body,
+main {
   height: 100%;
 }
 body {
@@ -12,17 +13,26 @@ body {
   overflow: hidden;
 }
 
+main {
+  display: flex;
+}
+
+#controls {
+  flex-grow: 1;
+  padding: 20px;
+}
+
 #world {
-  max-width: calc(100% - 10px);
-  max-height: calc(100% - 10px);
+  height: 100%;
+  flex-grow: 0;
   aspect-ratio: 1 / 1;
+  padding: 5px;
+  margin: 0;
+  /* aspect-ratio: 1 / 1; */
   margin: auto;
   display: flex;
   flex-direction: column;
   gap: 1px;
-  padding: 5px;
-  margin-top: 5px;
-  border: 1px solid hsl(0, 0%, 70%);
 }
 #world .row {
   display: flex;
@@ -60,10 +70,3 @@ body {
 /* #world .field button:hover {
   background-color: hsla(0, 100%, 50%, 50%);
 } */
-
-#controls {
-  position: absolute;
-  top: 0;
-  right: 0;
-  padding: 20px;
-}
