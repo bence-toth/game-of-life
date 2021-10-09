@@ -5,6 +5,7 @@
   margin: 0;
   padding: 0;
   font-family: "Atkinson Hyperlegible", sans-serif;
+  line-height: 1;
 }
 
 html,
@@ -89,6 +90,13 @@ main {
   gap: 0.5vmax;
 }
 
+#controls h2 {
+  background-color: hsl(0, 0%, 85%);
+  padding: 0.5vmax;
+  font-size: clamp(14px, 1.5vmax, 20px);
+  text-align: center;
+}
+
 #controls .toolbar {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
@@ -122,13 +130,13 @@ main {
   padding: 0.5vmax;
   cursor: pointer;
   font-size: clamp(12px, 1vmax, 20px);
+  gap: 0.25vmax;
 }
 
 #controls .toolbar button .icon img {
   width: 100%;
   max-width: 2.5vmax;
   display: block;
-  margin-bottom: 0.5vmax;
 }
 
 #controls .toolbar button#play[data-playing="true"] .play {
@@ -137,4 +145,38 @@ main {
 
 #controls .toolbar button#play[data-playing="false"] .pause {
   display: none;
+}
+
+#controls .draw {
+  display: grid;
+  gap: 0.5vmax;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+@media (max-aspect-ratio: 3/2) {
+  #controls .draw {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-aspect-ratio: 6/5) {
+  #controls .draw {
+    grid-template-columns: 1fr;
+  }
+}
+
+#controls .draw button {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5vmax;
+  cursor: pointer;
+  font-size: clamp(12px, 1vmax, 20px);
+  gap: 0.25vmax;
+}
+
+#controls .draw button .icon img {
+  max-width: 2.5vmax;
 }
