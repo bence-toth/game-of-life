@@ -15,14 +15,14 @@ body {
 
 main {
   display: flex;
-  gap: 5px;
+  gap: 0.5vmax;
 }
 
 #world {
   height: 100%;
   flex-grow: 0;
   aspect-ratio: 1 / 1;
-  padding: 5px;
+  padding: 0.5vmax;
   padding-inline-end: 0;
   margin: auto;
   display: flex;
@@ -70,14 +70,33 @@ main {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  padding: 5px;
+  padding: 0.5vmax;
   padding-inline-start: 0;
-  gap: 5px;
+  gap: 0.5vmax;
 }
 
 #controls .toolbar {
-  display: flex;
-  gap: 5px;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.5vmax;
+}
+
+@media (max-aspect-ratio: 3/2) {
+  #controls .toolbar {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-aspect-ratio: 9/7) {
+  #controls .toolbar {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-aspect-ratio: 6/5) {
+  #controls .toolbar {
+    grid-template-columns: 1fr;
+  }
 }
 
 #controls .toolbar button {
@@ -86,15 +105,16 @@ main {
   width: 100%;
   align-items: center;
   justify-content: center;
-  padding: 5px;
+  padding: 0.5vmax;
   cursor: pointer;
+  font-size: clamp(12px, 1vmax, 20px);
 }
 
 #controls .toolbar button .icon img {
   width: 100%;
-  max-width: 32px;
+  max-width: 2.5vmax;
   display: block;
-  margin-bottom: 5px;
+  margin-bottom: 0.5vmax;
 }
 
 #controls .toolbar button#play[data-playing="true"] .play {
