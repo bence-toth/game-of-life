@@ -8,71 +8,74 @@
     <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
-    <main>
-      <div id="world"></div>
-      <div id="controls">
-        <h2>Tools</h2>
-        <div class="toolbar">
-          <button id="play" data-playing="false">
-            <span class="icon play">
-              <img src="./icons/play.svg" />
-            </span>
-            <span class="icon pause">
-              <img src="./icons/pause.svg" />
-            </span>
-            <span class="caption play">Play</span>
-            <span class="caption pause">Pause</span>
-          </button>
-          <button id="randomize">
-            <span class="icon">
-              <img src="./icons/dice.svg" />
-            </span>
-            <span class="caption">Random</span>
-          </button>
-          <button id="clear">
-            <span class="icon">
-              <img src="./icons/clear.svg" />
-            </span>
-            <span class="caption">Clear</span>
-          </button>
-          <button id="export">
-            <span class="icon">
-              <img src="./icons/export.svg" />
-            </span>
-            <span class="caption">Export</span>
-          </button>
-          <button id="import">
-            <span class="icon">
-              <img src="./icons/import.svg" />
-            </span>
-            <span class="caption">Import</span>
-          </button>
-          <button id="settings">
-            <span class="icon"> <img src="./icons/settings.svg" /> </span>
-            <span class="caption">Settings</span>
-          </button>
+    <div id="main">
+      <main id="world"></main>
+      <aside id="sidebar">
+        <div id="controls">
+          <h2>Tools</h2>
+          <div class="toolbar">
+            <button id="play" data-playing="false">
+              <span class="icon play">
+                <img src="./icons/play.svg" />
+              </span>
+              <span class="icon pause">
+                <img src="./icons/pause.svg" />
+              </span>
+              <span class="caption play">Play</span>
+              <span class="caption pause">Pause</span>
+            </button>
+            <button id="randomize">
+              <span class="icon">
+                <img src="./icons/dice.svg" />
+              </span>
+              <span class="caption">Random</span>
+            </button>
+            <button id="clear">
+              <span class="icon">
+                <img src="./icons/clear.svg" />
+              </span>
+              <span class="caption">Clear</span>
+            </button>
+            <button id="export">
+              <span class="icon">
+                <img src="./icons/export.svg" />
+              </span>
+              <span class="caption">Export</span>
+            </button>
+            <button id="import">
+              <span class="icon">
+                <img src="./icons/import.svg" />
+              </span>
+              <span class="caption">Import</span>
+            </button>
+            <button id="settings">
+              <span class="icon"> <img src="./icons/settings.svg" /> </span>
+              <span class="caption">Settings</span>
+            </button>
+          </div>
+          <h2>Draw</h2>
+          <div class="draw">
+            <button class="brush cell">
+              <span class="icon"> <img src="./icons/cell.svg" /> </span>
+              <span class="caption">Cell</span>
+            </button>
+            <button class="brush well">
+              <span class="icon"> <img src="./icons/well.svg" /> </span>
+              <span class="caption">Well</span>
+            </button>
+            <button class="brush wall">
+              <span class="icon"> <img src="./icons/wall.svg" /> </span>
+              <span class="caption">Wall</span>
+            </button>
+            <button class="brush void">
+              <span class="icon"> <img src="./icons/void.svg" /> </span>
+              <span class="caption">Void</span>
+            </button>
+          </div>
         </div>
-        <h2>Draw</h2>
-        <div class="draw">
-          <button class="brush cell">
-            <span class="icon"> <img src="./icons/cell.svg" /> </span>
-            <span class="caption">Cell</span>
-          </button>
-          <button class="brush well">
-            <span class="icon"> <img src="./icons/well.svg" /> </span>
-            <span class="caption">Well</span>
-          </button>
-          <button class="brush wall">
-            <span class="icon"> <img src="./icons/wall.svg" /> </span>
-            <span class="caption">Wall</span>
-          </button>
-          <button class="brush void">
-            <span class="icon"> <img src="./icons/void.svg" /> </span>
-            <span class="caption">Void</span>
-          </button>
-        </div>
+        <footer id="footer">by Bence A. Tóth</footer>
       </div>
-    </main>
+    </aside>
     <script src="./script.js"></script>
   </body>
 </html>
